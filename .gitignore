@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 # My .gitignore
 *.db
+/Cars.API/cars.db-shm
+/Cars.API/cars.db-wal
