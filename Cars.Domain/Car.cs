@@ -1,6 +1,4 @@
-﻿using Cars.Domain;
-
-namespace Cars.Domain;
+﻿namespace Cars.Domain;
 
 public enum FuelType
 {
