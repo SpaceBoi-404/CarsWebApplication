@@ -1,0 +1,77 @@
+{
+  "cars": [
+    {
+      "brand": "Skoda",
+      "model": "Octavia",
+      "doorsNumber": 5,
+      "luggageCapacity": 600,
+      "engineCapacity": 1500,
+      "fuelType": 1,
+      "productionDate": "2021-03-15",
+      "averageFuelConsumption": 6.5,
+      "bodyType": 1,
+      "id": "1"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Corolla",
+      "doorsNumber": 5,
+      "luggageCapacity": 600,
+      "engineCapacity": 1500,
+      "fuelType": 1,
+      "productionDate": "2008-03-15",
+      "averageFuelConsumption": 6.5,
+      "bodyType": 1,
+      "id": "2"
+    },
+    {
+      "brand": "Renault",
+      "model": "Clio",
+      "doorsNumber": 5,
+      "luggageCapacity": 600,
+      "engineCapacity": 1500,
+      "fuelType": 1,
+      "productionDate": "2021-03-15",
+      "averageFuelConsumption": 6.5,
+      "bodyType": 1,
+      "id": "3"
+    },
+    {
+      "brand": "Ford",
+      "model": "Mustang",
+      "doorsNumber": 3,
+      "luggageCapacity": 300,
+      "engineCapacity": 5000,
+      "fuelType": 0,
+      "productionDate": "2026-03-15",
+      "averageFuelConsumption": 12.2,
+      "bodyType": 1,
+      "id": "4"
+    },
+    {
+      "brand": "Ford",
+      "model": "Focus Mk II",
+      "doorsNumber": 5,
+      "luggageCapacity": 34136,
+      "engineCapacity": 1600,
+      "fuelType": 1,
+      "productionDate": "2001-03-23",
+      "averageFuelConsumption": 7,
+      "bodyType": 1,
+      "id": "Gi2sl4PsLlg"
+    },
+    {
+      "brand": "Renault",
+      "model": "Twingo",
+      "doorsNumber": 3,
+      "luggageCapacity": 300,
+      "engineCapacity": 1149,
+      "fuelType": 0,
+      "productionDate": "2011-07-01",
+      "averageFuelConsumption": 7,
+      "bodyType": 0,
+      "id": "noGQwb4tS80"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
