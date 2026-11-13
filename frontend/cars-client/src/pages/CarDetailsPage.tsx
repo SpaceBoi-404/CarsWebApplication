@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { getCarById } from '../services/carService';
-import type { Car } from '../models/Car'
-
+import { formatDateForDisplay, getBodyTypeLabel, getFuelTypeLabel, type Car } from '../models/Car'
+import axios from 'axios'
+import { useCarUiStore } from '../store/useCarUiStore'
 
 export default function CarDetailsPage() {
     const { id } = useParams()
     const [car, setCar] = useState<Car | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+
+    const favoriteCarIds = useCarUiStore((state) => state.favoriteCarIds)
+    const toggleFavorite = useCarUiStore((state) => state.toggleFavorite)
 
     useEffect(() => {
         const controller = new AbortController();
@@ -19,9 +23,8 @@ export default function CarDetailsPage() {
                 setIsLoading(true)
                 setError(null)
                 setCar(await getCarById(id, controller.signal))
-
             } catch (e) {
-                if (e instanceof DOMException && e.name === 'AbortError') return
+                if (axios.isCancel(e)) return
                 if (e instanceof Error)
                     setError(e.message)
                 else
@@ -39,7 +42,7 @@ export default function CarDetailsPage() {
             controller.abort();
         }
     }, [id])
-
+    
     if (isLoading) {
         return <p>Ładowanie danych...</p>
     }
@@ -49,6 +52,8 @@ export default function CarDetailsPage() {
     }
 
     if (!car) return
+
+    const isFavorite = favoriteCarIds.includes(car.id)
 
     return (
         <section className='car-details'>
@@ -80,11 +85,11 @@ export default function CarDetailsPage() {
                 </div>
                 <div className="detail-row">
                     <dt>Rodzaj paliwa</dt>
-                    <dd>{car.fuelType}</dd>
+                    <dd>{getFuelTypeLabel(car.fuelType)}</dd>
                 </div>
                 <div className="detail-row">
                     <dt>Data produkcji</dt>
-                    <dd>{car.productionDate}</dd>
+                    <dd>{formatDateForDisplay(car.productionDate)}</dd>
                 </div>
                 <div className="detail-row">
                     <dt>Średnie zużycie paliwa</dt>
@@ -92,12 +97,18 @@ export default function CarDetailsPage() {
                 </div>
                 <div className="detail-row">
                     <dt>Typ nadwozia</dt>
-                    <dd>{car.bodyType}</dd>
+                    <dd>{getBodyTypeLabel(car.bodyType)}</dd>
                 </div>
             </dl>
             <div className='buttonBox'>
-                <Link to='edit' className='btn'>Edytuj</Link>
-                <Link to='/cars' className='btn-secondary'>Wróć do listy</Link>
+                <Link to='edit' className='btn gold'>Edytuj</Link>
+                <Link to='/cars' className='btn'>Wróć do listy</Link>
+                <button type='button' 
+                    className={isFavorite ? 'btn btn-gold' : 'btn'}
+                    onClick={() => toggleFavorite(car.id)}
+                >
+                    {isFavorite ? 'Ulubiony' : 'Ulubione'}    
+                </button>
             </div>
         </section>
     )

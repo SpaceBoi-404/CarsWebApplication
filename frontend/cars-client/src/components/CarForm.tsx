@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { NewCar } from '../models/Car'
+import { BodyType, getBodyTypeLabel, FuelType, getFuelTypeLabel, type NewCar } from '../models/Car'
 
 interface CarFormProps {
     onSubmit: (carData: NewCar) => Promise<void>
@@ -52,10 +52,10 @@ export default function CarForm({ onSubmit, initialData }: CarFormProps) {
             doorsNumber: Number(formData.doorsNumber),
             luggageCapacity: Number(formData.luggageCapacity),
             engineCapacity: Number(formData.engineCapacity),
-            fuelType: Number(formData.fuelType),
+            fuelType: Number(formData.fuelType) as FuelType,
             productionDate: formData.productionDate,
             averageFuelConsumption: Number(formData.averageFuelConsumption),
-            bodyType: Number(formData.bodyType)
+            bodyType: Number(formData.bodyType) as BodyType
         }
     
         try {
@@ -97,11 +97,11 @@ export default function CarForm({ onSubmit, initialData }: CarFormProps) {
                 <label>Rodzaj paliwa</label>
                 <select name="fuelType" onChange={handleChange} value={formData.fuelType} required>
                     <option value="" disabled hidden></option>
-                    <option value={0}>Benzyna</option>
-                    <option value={1}>Diesel</option>
-                    <option value={2}>Hybryda</option>
-                    <option value={3}>Elektryk</option>
-                    <option value={4}>LPG</option>
+                    <option value={FuelType.Petrol}>{getFuelTypeLabel(FuelType.Petrol)}</option>
+                    <option value={FuelType.Diesel}>{getFuelTypeLabel(FuelType.Diesel)}</option>
+                    <option value={FuelType.Hybrid}>{getFuelTypeLabel(FuelType.Hybrid)}</option>
+                    <option value={FuelType.Electric}>{getFuelTypeLabel(FuelType.Electric)}</option>
+                    <option value={FuelType.LPG}>{getFuelTypeLabel(FuelType.LPG)}</option>
                 </select>
             </div>
             <div>
@@ -118,14 +118,14 @@ export default function CarForm({ onSubmit, initialData }: CarFormProps) {
                 <label>Typ nadwozia</label>
                 <select name="bodyType" onChange={handleChange} value={formData.bodyType} required>
                     <option value="" disabled hidden></option>
-                    <option value={0}>Hatchback</option>
-                    <option value={1}>Sedan</option>
-                    <option value={2}>Kombi</option>
-                    <option value={3}>SUV</option>
-                    <option value={4}>Roadster</option>
+                    <option value={BodyType.Hatchback}>{getBodyTypeLabel(BodyType.Hatchback)}</option>
+                    <option value={BodyType.Sedan}>{getBodyTypeLabel(BodyType.Sedan)}</option>
+                    <option value={BodyType.Kombi}>{getBodyTypeLabel(BodyType.Kombi)}</option>
+                    <option value={BodyType.SUV}>{getBodyTypeLabel(BodyType.SUV)}</option>
+                    <option value={BodyType.Roadster}>{getBodyTypeLabel(BodyType.Roadster)}</option>
                 </select>
             </div>
-            <button type="submit" id='submitBtn' className='btn' disabled={isSubmitting}>
+            <button type="submit" id='submitBtn' className='btn btn-gold' disabled={isSubmitting}>
                 {initialData ? 'Zapisz zmiany' : 'Dodaj samochód'}
             </button>
         </form>

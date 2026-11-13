@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router'
 import RootLayout from './layouts/RootLayout'
-import './App.css'
 
 import HomePage from './pages/HomePage'
 import CarsPage from './pages/CarsPage'

@@ -2,7 +2,8 @@ import { Link, useNavigate, useParams } from 'react-router'
 import CarForm, { type CarFormData } from '../components/CarForm'
 import { useState, useEffect } from 'react'
 import { getCarById, upadteCar } from '../services/carService'
-import type { NewCar } from '../models/Car'
+import { formatDateForInput, type NewCar } from '../models/Car'
+import axios from 'axios'
 
 export default function EditCarPage() {
     const { id } = useParams()
@@ -28,12 +29,12 @@ export default function EditCarPage() {
                     luggageCapacity: car.luggageCapacity,
                     engineCapacity: car.engineCapacity,
                     fuelType: car.fuelType,
-                    productionDate: car.productionDate,
+                    productionDate: formatDateForInput(car.productionDate),
                     averageFuelConsumption: car.averageFuelConsumption,
                     bodyType: car.bodyType
                 })
             } catch (e) {
-                if (e instanceof DOMException && e.name === 'AbortError') return
+                if (axios.isCancel(e)) return
                 if (e instanceof Error) setError(e.message)
                 else setError('Wystąpił nieznany błąd')
             } finally {
@@ -77,7 +78,7 @@ export default function EditCarPage() {
         <section>
             <h1>Edytuj samochód</h1>
             <CarForm onSubmit={handleSubmit} initialData={initialData} />
-            <Link to='/cars' className='btn-secondary'>Wróć do listy samochodów</Link>
+            <Link to='/cars' className='btn'>Wróć do listy samochodów</Link>
         </section>
     )
 }
