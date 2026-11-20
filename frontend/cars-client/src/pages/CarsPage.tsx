@@ -4,17 +4,20 @@ import type { Car } from '../models/Car'
 import { getCars, deleteCar } from '../services/carService'
 import axios from 'axios'
 import { useCarUiStore } from '../store/useCarUiStore'
+import { useAuthStore } from '../store/useAuthStore'
 
 export default function CarsPage() {
     const [cars, setCars] = useState<Car[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
+    const user = useAuthStore((state) => state.user)
     const searchTerm = useCarUiStore((state) => state.searchTerm)
     const setSearchTerm = useCarUiStore((state) => state.setSearchTerm)
     const showFavoritesOnly = useCarUiStore((state) => state.showFavoritesOnly)
     const setShowFavoritesOnly = useCarUiStore((state) => state.setShowFavoritesOnly)
-    const favoriteCarIds = useCarUiStore((state) => state.favoriteCarIds)
+    const favoriteCarIdsByUser = useCarUiStore((state) => state.favoriteCarIdsByUser)
+    const favoriteCarIds  = user ? favoriteCarIdsByUser[user.id] ?? [] : []
     const removeFavorite = useCarUiStore((state) => state.removeFavorite)
 
     const normalizedSearch = searchTerm.trim().toLowerCase()
@@ -27,6 +30,8 @@ export default function CarsPage() {
         return (matchesSearch && matchesFavorite)
     })
 
+    
+    
     useEffect(() => {
         const controller = new AbortController();
 
@@ -66,7 +71,7 @@ export default function CarsPage() {
 
         try {
             await deleteCar(id)
-            removeFavorite(id)
+            if (user) removeFavorite(user.id, id)
             setCars(prevCars => prevCars.filter(car => car.id !== id))
         } catch (e) {
             if (e instanceof Error) alert(e.message)

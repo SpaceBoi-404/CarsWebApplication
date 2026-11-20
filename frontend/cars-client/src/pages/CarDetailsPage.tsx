@@ -4,6 +4,7 @@ import { getCarById } from '../services/carService';
 import { formatDateForDisplay, getBodyTypeLabel, getFuelTypeLabel, type Car } from '../models/Car'
 import axios from 'axios'
 import { useCarUiStore } from '../store/useCarUiStore'
+import { useAuthStore } from '../store/useAuthStore'
 
 export default function CarDetailsPage() {
     const { id } = useParams()
@@ -11,7 +12,8 @@ export default function CarDetailsPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const favoriteCarIds = useCarUiStore((state) => state.favoriteCarIds)
+    const user = useAuthStore((state) => state.user)
+    const favoriteCarIdsByUser = useCarUiStore((state) => state.favoriteCarIdsByUser)
     const toggleFavorite = useCarUiStore((state) => state.toggleFavorite)
 
     useEffect(() => {
@@ -53,6 +55,7 @@ export default function CarDetailsPage() {
 
     if (!car) return
 
+    const favoriteCarIds = user ? favoriteCarIdsByUser[user.id] ?? [] : []
     const isFavorite = favoriteCarIds.includes(car.id)
 
     return (
@@ -105,7 +108,7 @@ export default function CarDetailsPage() {
                 <Link to='/cars' className='btn'>Wróć do listy</Link>
                 <button type='button' 
                     className={isFavorite ? 'btn btn-gold' : 'btn'}
-                    onClick={() => toggleFavorite(car.id)}
+                    onClick={() => { if (user) toggleFavorite(user.id, car.id) }}
                 >
                     {isFavorite ? 'Ulubiony' : 'Ulubione'}    
                 </button>
